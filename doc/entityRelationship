@@ -1,0 +1,26 @@
+erDiagram
+    CLASS {
+        int ClassID
+        string ClassName
+        int_Array StudentIDs
+        int_Array ClassDates
+    }
+    CLASS_DAY {
+        int ClassDate
+        Map_studentID-timestamp Attendance
+    }
+    STUDENT {
+        int StudentID
+        string StudentName
+        int RFC_code
+        int_Array ClassID
+    }
+    PROFESSOR {
+        int ProfessorID
+        string ProfessorName
+        int RFC_code
+        int_Array ClassID
+    }
+    PROFESSOR ||--o{ CLASS : has 
+    CLASS ||--o{ CLASS_DAY : every
+    CLASS ||--o{ STUDENT : has
