@@ -1,0 +1,29 @@
+sequenceDiagram
+    %% Randy is a student :)
+    actor "Randy"
+    "Randy"-->>Hardware: Taps phone to hardware
+    rect rgb(150,255,200)
+    note over Hardware,MiddlewareAPI: Put record to Firebase
+    Hardware->>+MiddlewareAPI: PUTs to Middleware via HTTP
+    MiddlewareAPI->>+Firebase: PUTs to Firebase REST API
+    end
+    rect rgb(255,150,200)
+    note over Hardware,Firebase: Confirmation feature
+    Firebase-->>MiddlewareAPI: Gives confirmation?
+    MiddlewareAPI->>+Firebase: GETs corresponding name
+    Firebase->>+MiddlewareAPI: Returns name
+    MiddlewareAPI-->>Hardware: Confirmation + Name?
+    end
+    Hardware-->>"Randy": "You're late, Randy."
+    "Randy"-->>Hardware: :(
+    participant Display
+    actor Hochberg
+    Hochberg-->>Display: "Tell me the extent of Randy's failures."
+    rect rgb(200, 150, 255)
+    note over MiddlewareAPI,Display: Get class attendance
+    Display->>+MiddlewareAPI: Queries Middleware via HTTP request
+    MiddlewareAPI->>+Firebase: Calls API GET for data
+    Firebase->>+MiddlewareAPI: Returns JSON data
+    MiddlewareAPI->>+Display: Delivers JSON Data
+    end
+    Display->>+Hochberg: "Randy sucks"
