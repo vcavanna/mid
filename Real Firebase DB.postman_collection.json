@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "3b2842ba-696a-4f7f-a885-0ee5a0026ed5",
+		"name": "Real Firebase DB",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26131035"
+	},
+	"item": [
+		{
+			"name": "Students",
+			"item": [
+				{
+					"name": "Add a Student",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"StudentName\": \"Sebastian\",\r\n    \"rfcCode\": 1234567890\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/students.json?{{access}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"students.json"
+							],
+							"query": [
+								{
+									"key": "{{access}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Student",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/classroom/students/{{StudentID_Sebas}}.json?{{access}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"classroom",
+								"students",
+								"{{StudentID_Sebas}}.json"
+							],
+							"query": [
+								{
+									"key": "{{access}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Professors",
+			"item": [
+				{
+					"name": "Add a Professor",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ProfessorID\": 1,\r\n    \"ProfessorName\": \"Robert Hochberg\",\r\n    \"rfcCode\": 123456789,\r\n    \"classIDs\": [\r\n        1\r\n    ]\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/professors.json?{{access}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"professors.json"
+							],
+							"query": [
+								{
+									"key": "{{access}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Professor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/professors.json?{{access}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"professors.json"
+							],
+							"query": [
+								{
+									"key": "{{access}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get Professor",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/professors.json",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"professors.json"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 17 Mar 2023 15:54:40 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "111"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache"
+								},
+								{
+									"key": "Strict-Transport-Security",
+									"value": "max-age=31556926; includeSubDomains; preload"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"-NQf4QJOOhET-uwZlmNA\": {\n        \"ProfessorID\": 1,\n        \"ProfessorName\": \"Robert Hochberg\",\n        \"classIDs\": [\n            1\n        ],\n        \"rfcCode\": 123456789\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Getting and Putting Class IDs",
+			"item": [
+				{
+					"name": "Get ClassID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/professors/{{HochProfID}}/classIDs/1/.json?{{access}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"professors",
+								"{{HochProfID}}",
+								"classIDs",
+								"1",
+								".json"
+							],
+							"query": [
+								{
+									"key": "{{access}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Put ClassID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"classIDs\": [345,1234,456,24334]\r\n}"
+						},
+						"url": {
+							"raw": "{{url}}/professors/{{HochProfID}}.json?{{access}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"professors",
+								"{{HochProfID}}.json"
+							],
+							"query": [
+								{
+									"key": "{{access}}",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Classes",
+			"item": [
+				{
+					"name": "Get Class",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://middleware-6a409-default-rtdb.firebaseio.com",
+			"type": "string"
+		},
+		{
+			"key": "StudentID_Sebas",
+			"value": "-NQ6UcWZ_U_Uj7rczUBt"
+		},
+		{
+			"key": "access",
+			"value": "auth=cDfzhozB6OioVvrNbg2qgT1ByaUpfEVg4y6u7lRO"
+		},
+		{
+			"key": "StudentID_T",
+			"value": "-NQ6U970K3JWXvT1sjvX",
+			"type": "string"
+		},
+		{
+			"key": "PrevStudentID_Sebas",
+			"value": "-NQ7VkOctbQ9k1tdfe2K",
+			"type": "string"
+		},
+		{
+			"key": "HochProfID",
+			"value": "-NQf4QJOOhET-uwZlmNA",
+			"type": "string"
+		}
+	]
+}
