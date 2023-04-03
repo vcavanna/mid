@@ -1,0 +1,14 @@
+//   {
+//   "rules": {
+//     ".read": true,
+//     ".write": true
+//   }
+// }
+
+//trying something out -- revert to above code to use postman without any authorization
+{
+  "rules" :{
+    ".read": "auth != null", 
+    ".write": "auth != null"
+  }
+}

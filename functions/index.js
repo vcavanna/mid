@@ -1,0 +1,25 @@
+// deleting a function from deployment:
+// firebase functions:delete myFunction
+const functions = require("firebase-functions");
+
+// Playing around with the "onCreate" function: this example replaces any student's name that's added to the database with "Theresa"
+// so: if you deploy this function, then add a student to the database via postman, the student's name will be changed
+// the "onCreate" function may be very useful for other things we want implemented in our database
+
+// exports.onStudentAdd= functions.database
+// .ref('/students/{studentID}')
+// .onCreate((snapshot, context) => {
+// 	const curStu = context.params.studentID
+// 	const studentVals = snapshot.val() 
+
+// 	return snapshot.ref.update({StudentName: 'Theresa'})
+// })
+
+
+// Create and deploy your first functions
+// https://firebase.google.com/docs/functions/get-started
+
+exports.helloWorld = functions.https.onRequest((request, response) => {
+  functions.logger.info("Hello logs!", {structuredData: true});
+  response.send("Hello from Firebase!");
+});
