@@ -24,6 +24,30 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
   response.send("Hello from Firebase!");
 });
 
+  exports.randomNumber = functions.https.onRequest((request, response) => {
+  const number = Math.round(Math.random() * 100);
+  response.send(number.toString());
+  })
+  
+
+exports.checkInStudent = functions.https.onRequest((request, response) => {
+	// Get from the request body the student ID and Class ID
+ 
+	// Generate a key for the "class day":
+	string date = getDate(); //Pat
+	string key = classKey(student.ID, date); // Veep
+
+	// Add studentID to list in class day struct:
+	classDay thisClass = getClassDay(key); // TG
+	thisClass.attendance.add(student.name, timestamp) // Seb
+	
+	// Update classID in firebase
+	functions.update.classDay = thisClass;
+
+	functions.logger.info("Hello logs!", {structuredData: true});
+  	response.send("Hello from Firebase!");
+})
+
 exports.randomNumber = functions.https.onRequest((request, response) => {
 const number = Math.round(Math.random() * 100);
 response.send(number.toString());
@@ -35,3 +59,4 @@ response.send(number.toString());
 exports.sayHello = functions.https.onCall((data, context) =>{
 return 'hello mid team'
 })
+>>>>>>> e23ff3f094015e95e5a24fda98f12c84b3cc9344
