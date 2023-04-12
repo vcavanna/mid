@@ -1,4 +1,3 @@
-
 var myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
@@ -8,19 +7,16 @@ const access = ".json?auth=cDfzhozB6OioVvrNbg2qgT1ByaUpfEVg4y6u7lRO"
 
 let raw = ""
 
-var postOptions = {
-	method: 'POST',
-	headers: myHeaders,
-	body: raw,
-	redirect: 'follow'
-};
-
-const jobj = {
-	data: JSON,
-	set data(data) {
-		this.data = data;
-	}
+function requestOptions_post(json_string){
+	let postOptions = {
+		method: 'POST',
+		headers: myHeaders,
+		body: json_string,
+		redirect: 'follow'
+	};
+	return postOptions;
 }
+
 var getOptions = {
 	method: 'GET',
 	redirect: 'follow'
@@ -51,7 +47,7 @@ async function getStudentInfo(rfcCode){ //takes an rfcCode and returns the node 
 	.then(result => console.log(result))
 	.catch(error => console.log('error', error));
 
-	// let retval =  await final.json(); if you want to return a json object rather than text output, then comment out the .then statments on lines 48 and 49
+	// let retval =  await final.json(); ///if you want to return a json object rather than text output, then comment out the .then statments on lines 48 and 49
 	// return retval;
 }
 
