@@ -24,6 +24,12 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
   response.send("Hello from Firebase!");
 });
 
+  exports.randomNumber = functions.https.onRequest((request, response) => {
+  const number = Math.round(Math.random() * 100);
+  response.send(number.toString());
+  })
+  
+
 exports.checkInStudent = functions.https.onRequest((request, response) => {
 	// Get from the request body the student ID and Class ID
  
