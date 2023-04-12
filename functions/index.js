@@ -47,9 +47,17 @@ import * as helpers from "./database-helper-funcs/base-requests.js";
 // // I think for many of our functions this is the type we want to be using because it allows for client-side to call them
 // //https://www.youtube.com/watch?v=8mL1VuiL5Kk&list=PL4cUxeGkcC9i_aLkr62adUTJi53y7OjOf&index=5
 
-function getClassDay(key){
-	let list_of_classdays = helpers.get(helpers.base.urlclass_days()); 
-	for(const i in list_of_classdays){
-		console.log(JSON.stringify[i]);
+async function getClassDay(key){
+	let listClassDays = await helpers.get(helpers.base.urlclass_days()); 
+	for(const i in listClassDays){
+		let dateKey = i;
+		let curDate = dateKey.substring(0, dateKey.length-5);
+		let curKey = dateKey.substring(dateKey.length-4);
+		if(key === curKey){
+			return curDate; 
+		}
 	}
+	console.log("date not found for key");
 }
+
+console.log(await getClassDay("aB2f"));

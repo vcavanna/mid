@@ -56,7 +56,7 @@ export async function get(url){ // returns a JSON object of whatever database ur
 	.catch(error => console.log('error', error));
 
 	let data = await geta.json();
-	console.log(data); // uncomment this to see the json object that is returned
+	//console.log(data); // uncomment this to see the json object that is returned
 	return data; 
 }
 
