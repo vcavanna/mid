@@ -47,3 +47,16 @@ exports.checkInStudent = functions.https.onRequest((request, response) => {
 	functions.logger.info("Hello logs!", {structuredData: true});
   	response.send("Hello from Firebase!");
 })
+
+exports.randomNumber = functions.https.onRequest((request, response) => {
+const number = Math.round(Math.random() * 100);
+response.send(number.toString());
+})
+
+// callable function example
+// I think for many of our functions this is the type we want to be using because it allows for client-side to call them
+//https://www.youtube.com/watch?v=8mL1VuiL5Kk&list=PL4cUxeGkcC9i_aLkr62adUTJi53y7OjOf&index=5
+exports.sayHello = functions.https.onCall((data, context) =>{
+return 'hello mid team'
+})
+>>>>>>> e23ff3f094015e95e5a24fda98f12c84b3cc9344
