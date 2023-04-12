@@ -35,7 +35,7 @@ exports.checkInStudent = functions.https.onRequest((request, response) => {
  
 	// Generate a key for the "class day":
 	string date = getDate(); //Patrick
-	string key = classKey(student.ID, date); // Veep
+	string key = genClassDayKey(student.ID, date); // Veep
 
 	// Add studentID to list in class day struct:
 	classDay thisClass = getClassDay(key); // TG
@@ -59,3 +59,7 @@ response.send(number.toString());
 exports.sayHello = functions.https.onCall((data, context) =>{
 return 'hello mid team'
 })
+
+function genClassDayKey(studentID, date) {
+	return studentID + "_"+ date;
+}
