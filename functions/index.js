@@ -31,7 +31,7 @@ import * as helpers from "./database-helper-funcs/base-requests.js";
 //   response.send(number.toString());
 //   })
   
-
+let x = helpers.get(helpers.base.urlstudents())
 // exports.checkInStudent = functions.https.onRequest((request, response) => {
 // 	// Get from the request body the student ID and Class ID
  
