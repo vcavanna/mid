@@ -34,7 +34,7 @@ exports.checkInStudent = functions.https.onRequest((request, response) => {
 	// Get from the request body the student ID and Class ID
  
 	// Generate a key for the "class day":
-	string date = getDate(); //Patrick
+	var date = getDate(); //Patrick
 	var key = genClassDayKey(student.ID, date); // Veep
 
 	// Add studentID to list in class day struct:
