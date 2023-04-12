@@ -1,0 +1,4 @@
+{
+	"main": "base-requests.js",
+	"type": "module"
+}
