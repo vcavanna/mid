@@ -34,7 +34,7 @@ exports.checkInStudent = functions.https.onRequest((request, response) => {
 	// Get from the request body the student ID and Class ID
  
 	// Generate a key for the "class day":
-	string date = getDate(); //Pat
+	string date = getDate(); //Patrick
 	string key = classKey(student.ID, date); // Veep
 
 	// Add studentID to list in class day struct:
@@ -59,4 +59,3 @@ response.send(number.toString());
 exports.sayHello = functions.https.onCall((data, context) =>{
 return 'hello mid team'
 })
->>>>>>> e23ff3f094015e95e5a24fda98f12c84b3cc9344
