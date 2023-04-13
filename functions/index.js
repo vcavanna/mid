@@ -38,8 +38,8 @@ exports.checkInStudent = functions.https.onRequest((request, response) => {
 
  
 	// Generate a key for the "class day":
-	const date = getDate(); //Pat wrote this but it is in the ether now
-	const key = classKey(studentID, date); 
+	const date = getToday(); //Pat wrote this but it is in the ether now
+	const key = genClassDayKey(studentID, date);
 
 	// Add studentID to list in class day struct:
 	const today = apiHelpers.apiGetRequest
