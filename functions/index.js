@@ -32,20 +32,25 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 
 exports.checkInStudent = functions.https.onRequest((request, response) => {
 	// Get from the request body the student ID and Class ID
+  // url would be something like https.{firebase_functions_url}.com/example?sid=900887873&cid=1234
+  const studentID = request.query.sid;
+  const classID = request.query.cid;
+
  
 	// Generate a key for the "class day":
-	string date = getDate(); //Pat
-	string key = classKey(student.ID, date); // Veep
+	const date = getDate(); //Pat wrote this but it is in the ether now
+	const key = classKey(studentID, date); 
 
 	// Add studentID to list in class day struct:
-	classDay thisClass = getClassDay(key); // TG
-	thisClass.attendance.add(student.name, timestamp) // Seb
+	const today = apiHelpers.apiGetRequest
+  
+	thisclassDate.attendance = {studentID, date} // Seb
 	
 	// Update classID in firebase
 	functions.update.classDay = thisClass;
 
 	functions.logger.info("Hello logs!", {structuredData: true});
-  	response.send("Hello from Firebase!");
+  	response.send("student Checked In... Probably");
 })
 
 exports.randomNumber = functions.https.onRequest((request, response) => {
@@ -59,4 +64,3 @@ response.send(number.toString());
 exports.sayHello = functions.https.onCall((data, context) =>{
 return 'hello mid team'
 })
->>>>>>> e23ff3f094015e95e5a24fda98f12c84b3cc9344
