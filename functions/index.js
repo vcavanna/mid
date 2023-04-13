@@ -62,7 +62,7 @@ async function getClassDay(key){ // is given a class key
 			return dateKey; 
 		}
 	}
-	console.log("date not found for key");
+	console.log("Error: date not found for key " + key);
 }
 
 console.log(await getClassDay("aB2f"));
