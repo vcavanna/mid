@@ -23,4 +23,4 @@ erDiagram
     }
     PROFESSOR ||--o{ CLASS : has 
     CLASS ||--o{ CLASS_DAY : every
-    CLASS ||--o{ STUDENT : has
+    CLASS ||--o{ STUDENT : has 

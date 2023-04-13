@@ -38,6 +38,7 @@ exports.checkInStudent = functions.https.onRequest((request, response) => {
 
  
 	// Generate a key for the "class day":
+
 	const date = getToday(); //Pat wrote this but it is in the ether now
 	const key = genClassDayKey(studentID, date);
 
@@ -64,3 +65,18 @@ response.send(number.toString());
 exports.sayHello = functions.https.onCall((data, context) =>{
 return 'hello mid team'
 })
+
+
+function genClassDayKey(studentID, date) {
+	return studentID + '_' + date;
+}
+function getToday(){
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0');
+	var yyyy = today.getFullYear();
+	
+	today = mm + dd + yyyy;
+	return today;
+	}
+
