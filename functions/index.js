@@ -43,8 +43,9 @@ exports.checkInStudent = functions.https.onRequest((request, response) => {
 	const key = genClassDayKey(studentID, date);
 
 	// Add studentID to list in class day struct:
-	const today = apiHelpers.apiGetRequest
-  
+	//const today = apiHelpers.apiGetRequest
+  	
+	//this should add a student to the attendance object
 	thisclassDate.attendance = {studentID, date} // Seb
 	
 	// Update classID in firebase
