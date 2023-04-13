@@ -43,6 +43,15 @@ function postOptions(json_string){ // give this a stringified JSON object
 		};
 		return postOptions;
 }
+function putOptions(json_string){ // give this a stringified JSON object
+	let postOptions = {
+		method: 'POST',
+		headers: myHeaders,
+		body: json_string,
+		redirect: 'follow'
+	};
+	return postOptions;
+}
 
 function getOptions(){
 	return {
@@ -51,7 +60,7 @@ function getOptions(){
 	};
 }
 
-export async function get(url){ // returns a JSON object of whatever database url you request from 
+export async function get(url){ // returns a JSON object of whatever database url you request from: Example: get(base.)
 	const geta = await fetch(url, getOptions())
 	.catch(error => console.log('error', error));
 
@@ -66,6 +75,13 @@ async function post(url, content){ // this post function takes the url, and also
 	console.log(JSON.parse(content))
 } 
 
+export async function put(url, content){
+	const puta = await fetch(url, putOptions(content))
+	.catch(error => console.log('error', error));
+	console.log(JSON.parse(content))
+}
 // since firebase automatically creates a unique ID whenever post is used, it may not be the best to use post for now
 
 // will be writing a put helper function in order to avoid using the unique IDs
+
+
