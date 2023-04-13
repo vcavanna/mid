@@ -34,7 +34,7 @@ exports.checkInStudent = functions.https.onRequest((request, response) => {
 	// Get from the request body the student ID and Class ID
  
 	// Generate a key for the "class day":
-	var date = getDate(); //Patrick
+	var date = getToday(); //Patrick. Returns dat in MMDDYYYY format
 	var key = genClassDayKey(student.ID, date); // Veep
 
 	// Add studentID to list in class day struct:
@@ -63,3 +63,12 @@ return 'hello mid team'
 function genClassDayKey(studentID, date) {
 	return studentID + '_' + date;
 }
+function getToday(){
+	var today = new Date();
+	var dd = String(today.getDate()).padStart(2, '0');
+	var mm = String(today.getMonth() + 1).padStart(2, '0');
+	var yyyy = today.getFullYear();
+	
+	today = mm + dd + yyyy;
+	return today;
+	}
