@@ -12,7 +12,7 @@ jobs: #things that this workflow will do
             - uses: actions/checkout@v3
             
             - name: install-npm-packages
-              run: | 
+            - run: | 
                 cd functions 
                 npm install
                     
