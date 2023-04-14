@@ -12,12 +12,13 @@ jobs: #things that this workflow will do
             - uses: actions/checkout@v3
             
             - name: install-npm-packages
-            - run: | 
-                cd functions 
+              run: | 
+                cd functions
                 npm install
-                    
+              
+   
             - name: deploy-fb-functions
-            - uses: w9jds/firebase-action@master
+              uses: w9jds/firebase-action@master
               with: 
                 args: deploy --only functions
               env: 
