@@ -1,0 +1,36 @@
+#the purpose of this workflow is to deploy functions each time there is a push to the master branch
+name: deploy-fb-functions
+
+on: 
+  push: 
+    branches: [main]  #this will happen when we push to the main branch 
+    
+
+jobs: #things that this workflow will do
+    
+    deploy-functions: 
+          runs-on: ubuntu-latest
+          steps:
+            - uses: actions/checkout@v3
+            
+            - name: install-npm-packages
+              run: | 
+                cd functions 
+                npm install
+                    
+            - name: deploy-fb-functions
+            - uses: w9jds/firebase-action@master
+              with: 
+                args: deploy --only functions
+              env: 
+               repoToken: '${{ secrets.GITHUB_TOKEN }}'
+               firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MIDDLEWARE_6A409 }}'
+               projectId: middleware-6a409
+
+#FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}} 
+            
+            
+            
+          
+    
+        
