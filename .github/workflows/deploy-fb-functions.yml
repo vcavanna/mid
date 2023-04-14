@@ -1,9 +1,7 @@
 #the purpose of this workflow is to deploy functions each time there is a push to the master branch
 name: deploy-fb-functions
 
-on: 
-  push: 
-    branches: [main]  #this will happen when we push to the main branch 
+on: [push] 
     
 
 jobs: #things that this workflow will do
