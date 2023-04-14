@@ -5,30 +5,12 @@ const functions = require("firebase-functions");
 const helpers = require("./database-helper-funcs/base-requests.js");
 
 //see ISO-8601 for date time use this for 
-/////////////////////////////
 
-// deleting a function from deployment:
-// firebase functions:delete myFunction
+exports.randomNumber = functions.https.onRequest((request, response) => {
+const number = Math.round(Math.random() * 100);
+response.send(number.toString());
+})
 
-// Playing around with the "onCreate" function: this example replaces any student's name that's added to the database with "Theresa"
-// so: if you deploy this function, then add a student to the database via postman, the student's name will be changed
-// the "onCreate" function may be very useful for other things we want implemented in our database
-
-
-
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
-
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
-
-  exports.randomNumber = functions.https.onRequest((request, response) => {
-  const number = Math.round(Math.random() * 100);
-  response.send(number.toString());
-  })
-  
 
 exports.checkInStudent = functions.https.onRequest((request, response) => {
 	// Get from the request body the student ID and Class ID
@@ -36,7 +18,6 @@ exports.checkInStudent = functions.https.onRequest((request, response) => {
   const studentID = request.query.sid;
   const classID = request.query.cid;
 
- 
 	// Generate a key for the "class day":
 
 	const date = getToday(); //Pat wrote this but it is in the ether now
@@ -66,27 +47,17 @@ function genClassDayKey(studentID, date) {
 
 }
 function getToday(){
-	var today = new Date();
+	var today = new Date(); //use function today.toISOString()
 	var dd = String(today.getDate()).padStart(2, '0');
 	var mm = String(today.getMonth() + 1).padStart(2, '0');
 	var yyyy = today.getFullYear();
 	
 	today = mm + dd + yyyy;
 	return today;
-	}
+}
 
-async function getClassDay(key){ // is given a class key
-
-
-	let listClassDays= await helpers.get(helpers.base().urlclass_days()); // gets the node associated with classdays
-		for(const i in listClassDays){
-			let dateKey = i;
-			// let curDate = dateKey.substring(0, dateKey.length-5);
-			let curKey = dateKey.substring(dateKey.length-4);
-			if(key === curKey){
-				console.log(dateKey);
-				return dateKey; 
-			}
-		}
-	}
-getClassDay("aB2f");
+async function getClassDay(key){ // is given a class key: example usage: //getClassDay("04112023_aB2f");
+	let key_JSON= await helpers.get(helpers.base().append(helpers.base().class_days, key)); // gets the node associated with classdays
+	console.log(key_JSON);
+	return key_JSON;
+}
