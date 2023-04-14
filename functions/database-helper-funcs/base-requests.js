@@ -1,5 +1,26 @@
-var myHeaders = new Headers();
+let myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
+
+module.exports = {
+
+	get: async function (url){ // returns a JSON object of whatever database url you request from: Example: get(base.)
+		return get(url); 
+	},
+
+	base: function() {
+		return base; 
+	},
+
+	put: async function (url, content){
+		return put(url,content);
+	},
+	
+	post: async function (url, content){
+		return post(url,content);
+	}
+
+
+}
 
 const access = {
 	acc0: "bg2q",
@@ -11,7 +32,7 @@ const access = {
 	}
 }; 
 
-export const base = { //basically much easier to build the urls for doing requests: for example, base.urlstudents() just sets up the string for requests having to do with that part of the structure
+const base = { //basically much easier to build the urls for doing requests: for example, base.urlstudents() just sets up the string for requests having to do with that part of the structure
 	baseURL: "https://middleware-6a409-default-rtdb.firebaseio.com", 
 	students: "/students",
 	professors: "/professors",
@@ -60,7 +81,7 @@ function getOptions(){
 	};
 }
 
-export async function get(url){ // returns a JSON object of whatever database url you request from: Example: get(base.)
+async function get(url){ // returns a JSON object of whatever database url you request from: Example: get(base.)
 	const geta = await fetch(url, getOptions())
 	.catch(error => console.log('error', error));
 
@@ -75,7 +96,7 @@ async function post(url, content){ // this post function takes the url, and also
 	console.log(JSON.parse(content))
 } 
 
-export async function put(url, content){
+async function put(url, content){
 	const puta = await fetch(url, putOptions(content))
 	.catch(error => console.log('error', error));
 	console.log(JSON.parse(content))
