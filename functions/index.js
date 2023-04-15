@@ -32,20 +32,27 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 
 exports.checkInStudent = functions.https.onRequest((request, response) => {
 	// Get from the request body the student ID and Class ID
+  // url would be something like https.{firebase_functions_url}.com/example?sid=900887873&cid=1234
+  const studentID = request.query.sid;
+  const classID = request.query.cid;
+
  
 	// Generate a key for the "class day":
+  
 	var date = getDateTime(); //Patrick. Returns dat in MMDDYYYY format
 	var key = genClassDayKey(student.ID, date); // Veep
 
 	// Add studentID to list in class day struct:
-	classDay thisClass = getClassDay(key); // TG
-	thisClass.attendance.add(student.name, timestamp) // Seb
+	//const today = apiHelpers.apiGetRequest
+  	
+	//this should add a student to the attendance object
+	thisclassDate.attendance = {studentID, date} // Seb
 	
 	// Update classID in firebase
 	functions.update.classDay = thisClass;
 
 	functions.logger.info("Hello logs!", {structuredData: true});
-  	response.send("Hello from Firebase!");
+  	response.send("student Checked In... Probably");
 })
 
 exports.randomNumber = functions.https.onRequest((request, response) => {
@@ -60,11 +67,14 @@ exports.sayHello = functions.https.onCall((data, context) =>{
 return 'hello mid team'
 })
 
+
 function genClassDayKey(studentID, date) {
 	return studentID + '_' + date;
 }
+
 function getDateTime(){
 
 	var date = new Date();
 	return date.toISOString();
 	}
+
