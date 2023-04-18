@@ -1,6 +1,11 @@
 // deleting a function from deployment:
 // firebase functions:delete myFunction
+
 const functions = require("firebase-functions");
+const helpers = require("./database-helper-funcs/base-requests.js");
+
+// deleting a function from deployment:
+// firebase functions:delete myFunction
 
 // Playing around with the "onCreate" function: this example replaces any student's name that's added to the database with "Theresa"
 // so: if you deploy this function, then add a student to the database via postman, the student's name will be changed
@@ -73,4 +78,3 @@ function getDateTime() {
 	var date = new Date();
 	return date.toISOString();
 }
-
