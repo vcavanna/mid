@@ -1,5 +1,4 @@
-let myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
+
 
 module.exports = {
 
