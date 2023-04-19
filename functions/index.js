@@ -78,3 +78,40 @@ function getDateTime() {
 	var date = new Date();
 	return date.toISOString();
 }
+
+
+exports.getProfessorAttendanceData = functions.https.onRequest((request, response) => { // given a prof id, output the info associated
+	let profID = request.body.id; 
+	let baseProfNode = helpers.get(base().append(base().professors, profID));
+	console.log(baseProfNode); 
+
+})
+
+
+
+// {
+//     "name":"Robert Hochberg",
+//     "classes":[
+//         {
+//             "class_name":"Introduction to Computer Science",
+//             "class_id":"secretly-intro-class-id",
+//             "class_days": {
+//                 "2023-04-18T13:00:00Z_secretly-intro-class-id": {
+//                     "classDate": "2023-04-18T13:00:00Z",
+//                     "attendance": {
+//                         "Jacob Humble": "2023-04-18T13:05:00Z",
+//                         "Andrew Ferguson": "2023-04-18T12:59:00Z"
+//                     }
+//                 },
+//                 "2023-04-20T13:00:00Z_secretly-intro-class-id": {
+//                     "classDate": "2023-04-20T13:00:00Z",
+//                     "attendance":{
+//                         "Jacob Humble": "2023-04-20T13:25:00Z",
+//                         "Andrew Ferguson":"2023-04-20T14:20:00Z",
+//                         "Theresa Gasser":"2023-04-20T13:00:05Z"
+//                     }
+//                 }
+//             }
+//         }
+//     ]
+// }
