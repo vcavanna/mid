@@ -1,0 +1,10 @@
+{
+	"name": "base-requests",
+	"main": "base-requests.js",
+	"engines": {
+		"node": ">=16"
+	},
+	"dependencies": {
+		"node-fetch": "^2.6.9"
+	}
+}

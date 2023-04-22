@@ -86,7 +86,7 @@ exports.getProfessorAttendanceData = functions.https.onRequest(async (request, r
 	let baseURL = helpers.base(); 
 	const baseProfNode = await helpers.get(baseURL.append(baseURL.professors, profID));	
 
-	response.send("AAAAHHH"); 
+	response.send(baseProfNode); 
 
 })
 // async function i(){
