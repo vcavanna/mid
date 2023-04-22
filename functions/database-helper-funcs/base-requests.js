@@ -53,6 +53,8 @@ const base = { //basically much easier to build the urls for doing requests: for
 }
 
 function postOptions(json_string){ // give this a stringified JSON object
+	let myHeaders = new Headers();
+	myHeaders=myHeaders.append("Content-Type", "application/json");
 		let postOptions = {
 			method: 'POST',
 			headers: myHeaders,
@@ -62,7 +64,8 @@ function postOptions(json_string){ // give this a stringified JSON object
 		return postOptions;
 }
 function putOptions(json_string){ // give this a stringified JSON object
-	// let myHeaders = new Headers().append("Content-Type", "application/json");
+	let myHeaders = new Headers();
+	myHeaders=myHeaders.append("Content-Type", "application/json");
 	let postOptions = {
 		method: 'PUT',
 		headers: myHeaders,

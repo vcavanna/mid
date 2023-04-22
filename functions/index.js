@@ -98,7 +98,16 @@ exports.getProfessorAttendanceData = functions.https.onRequest(async (request, r
 // 	//const classthing = await 
 // 	}
 
+async function i(){
+	let baseURL = helpers.base(); 
 
+	const JN = {"ProfessorName":"Robert Hochberg",
+				"classIDs":[345],
+				"rfcCode":123456789};
+
+	helpers.put(baseURL.append(baseURL.professors, "6a407"), JN );
+}
+i()
 
 // Example return value for GetProfAttendance
 //{
@@ -127,13 +136,3 @@ exports.getProfessorAttendanceData = functions.https.onRequest(async (request, r
 //         }
 //     ]
 // }
-async function x(){
-	let profID = "-NQf4QJOOhET-uwZlmNA";
-	let baseURL = helpers.base(); 
-	let classID = "aB2f";
-	const baseProfNode = await helpers.get(baseURL.append(baseURL.professors, profID));	
-
-	const classthing = await helpers.get(baseURL.append(baseURL.classes, classID));	
-	console.log(classthing);
-}
-x()
