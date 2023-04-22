@@ -2,7 +2,7 @@
 // firebase functions:delete myFunction
 
 const functions = require("firebase-functions");
-const helpers = require("./database-helper-funcs/base-requests.js");
+const helpers = require("database-helper-funcs");
 
 // deleting a function from deployment:
 // firebase functions:delete myFunction
@@ -80,16 +80,28 @@ function getDateTime() {
 }
 
 
-exports.getProfessorAttendanceData = functions.https.onRequest((request, response) => { // given a prof id, output the info associated
-	let profID = request.body.id; 
-	let baseProfNode = helpers.get(base().append(base().professors, profID));
-	console.log(baseProfNode); 
+exports.getProfessorAttendanceData = functions.https.onRequest(async (request, response) => { // given a prof id, output the info associated
+	let profID = "-NQf4QJOOhET-uwZlmNA"; 
+	
+	let baseURL = helpers.base(); 
+	const baseProfNode = await helpers.get(baseURL.append(baseURL.professors, profID));	
+
+	response.send("AAAAHHH"); 
 
 })
+// async function i(){
+// 	let baseURL = helpers.base(); 
+// 	let profID = "-NQf4QJOOhET-uwZlmNA";
+// 	profID = profID.concat("/classIDs");
+// 	let JSON=  { "StudentName": "Se", "rfcCode": 1234567890 } ;
+// 	helpers.put(baseURL.append(helpers.base().students, "-NQ7VkOctbQ9k1tdfe2K"), JSON );
+// 	//const classthing = await 
+// 	}
 
 
 
-// {
+// Example return value for GetProfAttendance
+//{
 //     "name":"Robert Hochberg",
 //     "classes":[
 //         {
@@ -115,3 +127,13 @@ exports.getProfessorAttendanceData = functions.https.onRequest((request, respons
 //         }
 //     ]
 // }
+async function x(){
+	let profID = "-NQf4QJOOhET-uwZlmNA";
+	let baseURL = helpers.base(); 
+	let classID = "aB2f";
+	const baseProfNode = await helpers.get(baseURL.append(baseURL.professors, profID));	
+
+	const classthing = await helpers.get(baseURL.append(baseURL.classes, classID));	
+	console.log(classthing);
+}
+x()
