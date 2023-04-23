@@ -108,11 +108,14 @@ exports.getProfessorAttendanceData = functions.https.onRequest(async (request, r
 		for(const x in classDaysNode){
 			let cur = x.substring(x.length-4, x.length);
 			if(cur == class_obj.class_id){
-				//console.log(cur);
-				class_obj.class_days.push(classDaysNode[x]);
+				let class_day_id_obj = {
+					[x]: classDaysNode[x],
+				 }
+				 class_obj.class_days.push(class_day_id_obj);
 			}
 		}
 		output.classes.push(class_obj);
 	}
 	response.send(output); 
 })
+
