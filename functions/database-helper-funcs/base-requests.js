@@ -1,5 +1,4 @@
-
-
+const fetch = require("node-fetch");
 module.exports = {
 
 	get: async function (url){ // returns a JSON object of whatever database url you request from: Example: get(base.)
@@ -17,7 +16,6 @@ module.exports = {
 	post: async function (url, content){
 		return post(url,content);
 	}
-
 
 }
 
@@ -51,10 +49,12 @@ const base = { //basically much easier to build the urls for doing requests: for
 	},
 	append: function (node, subnode) {
 		return this.baseURL + node + "/" + subnode + access.all(); 
-	}
+	}// base.append(base.class_days,  )
 }
 
 function postOptions(json_string){ // give this a stringified JSON object
+	let myHeaders = new Headers();
+	myHeaders=myHeaders.append("Content-Type", "application/json");
 		let postOptions = {
 			method: 'POST',
 			headers: myHeaders,
@@ -64,10 +64,12 @@ function postOptions(json_string){ // give this a stringified JSON object
 		return postOptions;
 }
 function putOptions(json_string){ // give this a stringified JSON object
+	let myHeaders = new Headers();
+	myHeaders=myHeaders.append("Content-Type", "application/json");
 	let postOptions = {
-		method: 'POST',
+		method: 'PUT',
 		headers: myHeaders,
-		body: json_string,
+		body: JSON.stringify(json_string),
 		redirect: 'follow'
 	};
 	return postOptions;
@@ -98,7 +100,7 @@ async function post(url, content){ // this post function takes the url, and also
 async function put(url, content){
 	const puta = await fetch(url, putOptions(content))
 	.catch(error => console.log('error', error));
-	console.log(JSON.parse(content))
+	//console.log(JSON.parse(content))
 }
 // since firebase automatically creates a unique ID whenever post is used, it may not be the best to use post for now
 

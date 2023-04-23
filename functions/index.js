@@ -2,7 +2,7 @@
 // firebase functions:delete myFunction
 
 const functions = require("firebase-functions");
-const helpers = require("./database-helper-funcs/base-requests.js");
+const helpers = require("database-helper-funcs");
 
 // deleting a function from deployment:
 // firebase functions:delete myFunction
@@ -78,3 +78,42 @@ function getDateTime() {
 	var date = new Date();
 	return date.toISOString();
 }
+
+//example: https://us-central1-middleware-6a409.cloudfunctions.net/getProfessorAttendanceData?id=6a407
+exports.getProfessorAttendanceData = functions.https.onRequest(async (request, response) => { // given a prof id, output the info associated
+	let output = { "name": "",
+				   "classes": []
+	}
+	let class_obj = {"class_name": "",
+		"class_id": "", 
+		"class_days": [],
+	}
+	let profID = request.query.id;
+	if(profID == null){ // no id param given
+		response.send("how dare you."); 
+	}
+	let baseURL = helpers.base(); 
+	let proNode = baseURL.professors + "/" + profID;
+	const profNode = await helpers.get(baseURL.append(proNode,""));
+	if(profNode == null){ // id is not found in the database
+		response.send("check your id."); 
+	}
+	output.name = await profNode.ProfessorName; 
+	for(const i in await profNode.classIDs){
+		let classNode = await helpers.get(baseURL.append(baseURL.classes, profNode.classIDs[i]));
+		class_obj.class_name = await classNode.name; 
+		class_obj.class_id = profNode.classIDs[i];
+		let classDaysNode = await helpers.get(baseURL.urlclass_days());
+
+		for(const x in classDaysNode){
+			let cur = x.substring(x.length-4, x.length);
+			if(cur == class_obj.class_id){
+				//console.log(cur);
+				class_obj.class_days.push(classDaysNode[x]);
+				output.classes.push(class_obj);
+			}
+		}
+	}
+	response.send(output); 
+})
+
