@@ -90,13 +90,13 @@ exports.getProfessorAttendanceData = functions.https.onRequest(async (request, r
 	}
 	let profID = request.query.id;
 	if(profID == null){ // no id param given
-		response.send("how dare you."); 
+		response.status(404).send('Insufficient Parameters: \n No ID provided');
 	}
 	let baseURL = helpers.base(); 
 	let proNode = baseURL.professors + "/" + profID;
 	const profNode = await helpers.get(baseURL.append(proNode,""));
 	if(profNode == null){ // id is not found in the database
-		response.send("check your id."); 
+		response.status(404).send('ID not found');
 	}
 	output.name = await profNode.ProfessorName; 
 	for(const i in await profNode.classIDs){
@@ -110,10 +110,9 @@ exports.getProfessorAttendanceData = functions.https.onRequest(async (request, r
 			if(cur == class_obj.class_id){
 				//console.log(cur);
 				class_obj.class_days.push(classDaysNode[x]);
-				output.classes.push(class_obj);
 			}
 		}
+		output.classes.push(class_obj);
 	}
 	response.send(output); 
 })
-
