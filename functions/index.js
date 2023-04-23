@@ -79,60 +79,41 @@ function getDateTime() {
 	return date.toISOString();
 }
 
-
+//example: https://us-central1-middleware-6a409.cloudfunctions.net/getProfessorAttendanceData?id=6a407
 exports.getProfessorAttendanceData = functions.https.onRequest(async (request, response) => { // given a prof id, output the info associated
-	let profID = "-NQf4QJOOhET-uwZlmNA"; 
-	
+	let output = { "name": "",
+				   "classes": []
+	}
+	let class_obj = {"class_name": "",
+		"class_id": "", 
+		"class_days": [],
+	}
+	let profID = request.query.id;
+	if(profID == null){ // no id param given
+		response.send("how dare you."); 
+	}
 	let baseURL = helpers.base(); 
-	const baseProfNode = await helpers.get(baseURL.append(baseURL.professors, profID));	
+	let proNode = baseURL.professors + "/" + profID;
+	const profNode = await helpers.get(baseURL.append(proNode,""));
+	if(profNode == null){ // id is not found in the database
+		response.send("check your id."); 
+	}
+	output.name = await profNode.ProfessorName; 
+	for(const i in await profNode.classIDs){
+		let classNode = await helpers.get(baseURL.append(baseURL.classes, profNode.classIDs[i]));
+		class_obj.class_name = await classNode.name; 
+		class_obj.class_id = profNode.classIDs[i];
+		let classDaysNode = await helpers.get(baseURL.urlclass_days());
 
-	response.send(baseProfNode); 
-
+		for(const x in classDaysNode){
+			let cur = x.substring(x.length-4, x.length);
+			if(cur == class_obj.class_id){
+				//console.log(cur);
+				class_obj.class_days.push(classDaysNode[x]);
+				output.classes.push(class_obj);
+			}
+		}
+	}
+	response.send(output); 
 })
-// async function i(){
-// 	let baseURL = helpers.base(); 
-// 	let profID = "-NQf4QJOOhET-uwZlmNA";
-// 	profID = profID.concat("/classIDs");
-// 	let JSON=  { "StudentName": "Se", "rfcCode": 1234567890 } ;
-// 	helpers.put(baseURL.append(helpers.base().students, "-NQ7VkOctbQ9k1tdfe2K"), JSON );
-// 	//const classthing = await 
-// 	}
 
-async function i(){
-	let baseURL = helpers.base(); 
-
-	const JN = {"ProfessorName":"Robert Hochberg",
-				"classIDs":[345],
-				"rfcCode":123456789};
-
-	helpers.put(baseURL.append(baseURL.professors, "6a407"), JN );
-}
-i()
-
-// Example return value for GetProfAttendance
-//{
-//     "name":"Robert Hochberg",
-//     "classes":[
-//         {
-//             "class_name":"Introduction to Computer Science",
-//             "class_id":"secretly-intro-class-id",
-//             "class_days": {
-//                 "2023-04-18T13:00:00Z_secretly-intro-class-id": {
-//                     "classDate": "2023-04-18T13:00:00Z",
-//                     "attendance": {
-//                         "Jacob Humble": "2023-04-18T13:05:00Z",
-//                         "Andrew Ferguson": "2023-04-18T12:59:00Z"
-//                     }
-//                 },
-//                 "2023-04-20T13:00:00Z_secretly-intro-class-id": {
-//                     "classDate": "2023-04-20T13:00:00Z",
-//                     "attendance":{
-//                         "Jacob Humble": "2023-04-20T13:25:00Z",
-//                         "Andrew Ferguson":"2023-04-20T14:20:00Z",
-//                         "Theresa Gasser":"2023-04-20T13:00:05Z"
-//                     }
-//                 }
-//             }
-//         }
-//     ]
-// }
