@@ -4,6 +4,8 @@
 const functions = require("firebase-functions");
 const helpers = require("database-helper-funcs");
 
+
+const baseURL = helpers.base();
 // deleting a function from deployment:
 // firebase functions:delete myFunction
 
@@ -56,13 +58,30 @@ exports.checkInStudent = functions.https.onRequest((request, response) => {
 // I think for many of our functions this is the type we want to be using because it allows for client-side to call them
 //https://www.youtube.com/watch?v=8mL1VuiL5Kk&list=PL4cUxeGkcC9i_aLkr62adUTJi53y7OjOf&index=5
 
+async function classCheckinTest() {
 
-exports.classCheckin = functions.https.onRequest((request, response) => {
-	const text = {"aB2f":{"classDates":[4112023],"name":"Intro","students":[900887583]}};
-	const classID = getDateTime() + "_" + getClassKey(text);
+
+	const text = "6a407";
+	//const baseURL = helpers.base();
+	const IDs = await helpers.get(baseURL.append(baseURL.professors, text));
+	const classInfo = Object.values(IDs.classIDs);
+	const classCheck = getDateTime().slice(0,10) + "_" + classInfo;
+	helpers.put(baseURL.append(baseURL.class_days, classCheck), {"classDates": [" ",], "name": "test", "students": [" ",]});
+	
+}
+exports.classCheckin = functions.https.onRequest(async (request, response) => {
+	const text = request.query.profID;
+	const IDs = await helpers.get(baseURL.append(baseURL.professors, text));
+	const classInfo = Object.values(IDs.classIDs[0]);
+	const classCheck = getDateTime().slice(0,10) + "_" + classInfo;
+	helpers.put(baseURL.append(baseURL.class_days, classCheck), {"classDates": [" ",], "name": "none", "students": [" ",]});
 	//document.write(classID);
-	response.send(classID);
+	response.send(classCheck);
 })
+
+//classCheckinTest();
+
+
 
 function genClassDayKey(studentID, date) {
 	return studentID + '_' + getDateTime();
