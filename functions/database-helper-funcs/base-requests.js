@@ -94,7 +94,7 @@ async function get(url){ // returns a JSON object of whatever database url you r
 async function post(url, content){ // this post function takes the url, and also a stringified json object to post to that location
 	const posta = await fetch(url, postOptions(content))
 	.catch(error => console.log('error', error));
-	console.log(JSON.parse(content))
+	//console.log(JSON.parse(content))
 } 
 
 async function put(url, content){

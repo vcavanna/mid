@@ -32,27 +32,28 @@ exports.checkInStudent = functions.https.onRequest((request, response) => {
 	// url would be something like https.{firebase_functions_url}.com/example?sid=900887873&cid=1234
 	const studentID = request.query.sid;
 	const classID = request.query.cid;
+	var date = getDateTime().slice(0,10);  
 
-
-	// Generate a key for the "class day":
-
-	var date = getDateTime(); //Patrick. Returns dat in MMDDYYYY format
-	var key = genClassDayKey(student.ID, date); // Veep
-
-	// Add studentID to list in class day struct:
-	//const today = apiHelpers.apiGetRequest
-
-	//this should add a student to the attendance object
-	thisclassDate.attendance = { studentID, date } // Seb
-
-	// Update classID in firebase
-	functions.update.classDay = thisClass;
-
-	functions.logger.info("Hello logs!", { structuredData: true });
-	response.send("student Checked In... Probably");
+	const classDayID = date + "_" + classID;
+	helpers.put(baseURL.append(baseURL.class_days, classDayID + "/attendance" ), {studentID: getDateTime()});
+	response.send("student " + studentID + " Checked In at " + getDateTime() + " Probably");
 })
 
+async function checkInStudentTest(){
+	const studentID = 900888157;
+	const classID = "aB2f";
+	var date = getDateTime().slice(0,10);  
 
+	const classDayID = date + "_" + classID;
+	let recieved = await helpers.get(baseURL.append(baseURL.class_days, classDayID + "/attendance" ))
+recieved = recieved.push({studentID: getDateTime()});
+	//helpers.post(baseURL.append(baseURL.class_days, classDayID + "/attendance" ), {studentID: getDateTime()});
+	console.log(recieved);
+	//response.send("student " + studentID + " Checked In at " + getDateTime() + " Probably");
+
+}
+
+checkInStudentTest();
 
 // callable function example
 // I think for many of our functions this is the type we want to be using because it allows for client-side to call them
@@ -66,7 +67,7 @@ async function classCheckinTest() {
 	const IDs = await helpers.get(baseURL.append(baseURL.professors, text));
 	const classInfo = Object.values(IDs.classIDs);
 	const classCheck = getDateTime().slice(0,10) + "_" + classInfo;
-	helpers.put(baseURL.append(baseURL.class_days, classCheck), {"classDates": [" ",], "name": "test", "students": [" ",]});
+	helpers.put(baseURL.append(baseURL.class_days, classCheck), {"classDate": getDateTime(), "name": "test", "attendance": [" ",]});
 	
 }
 exports.classCheckin = functions.https.onRequest(async (request, response) => {
@@ -74,12 +75,12 @@ exports.classCheckin = functions.https.onRequest(async (request, response) => {
 	const IDs = await helpers.get(baseURL.append(baseURL.professors, text));
 	const classInfo = Object.values(IDs.classIDs[0]);
 	const classCheck = getDateTime().slice(0,10) + "_" + classInfo;
-	helpers.put(baseURL.append(baseURL.class_days, classCheck), {"classDates": [" ",], "name": "none", "students": [" ",]});
+	helpers.put(baseURL.append(baseURL.class_days, classCheck), {"classDate": getDateTime, "name": "none", "attendance": [" ",]});
 	//document.write(classID);
 	response.send(classCheck);
 })
 
-//classCheckinTest();
+classCheckinTest();
 
 
 
