@@ -32,21 +32,21 @@ exports.checkInStudent = functions.https.onRequest((request, response) => {
 	// url would be something like https.{firebase_functions_url}.com/example?sid=900887873&cid=1234
 	const studentID = request.query.sid;
 	const classID = request.query.cid;
-	var date = getDateTime().slice(0,10);  
+	var date = getDateTime().slice(0, 10);
 
 	const classDayID = date + "_" + classID;
-	helpers.put(baseURL.append(baseURL.class_days, classDayID + "/attendance" ), {studentID: getDateTime()});
+	helpers.put(baseURL.append(baseURL.class_days, classDayID + "/attendance"), { studentID: getDateTime() });
 	response.send("student " + studentID + " Checked In at " + getDateTime() + " Probably");
 })
 
-async function checkInStudentTest(){
+async function checkInStudentTest() {
 	const studentID = 900888157;
 	const classID = "aB2f";
-	var date = getDateTime().slice(0,10);  
+	var date = getDateTime().slice(0, 10);
 
 	const classDayID = date + "_" + classID;
-	let recieved = await helpers.get(baseURL.append(baseURL.class_days, classDayID + "/attendance" ))
-//recieved = recieved.push({studentID: getDateTime()});
+	let recieved = await helpers.get(baseURL.append(baseURL.class_days, classDayID + "/attendance"))
+	//recieved = recieved.push({studentID: getDateTime()});
 	//helpers.post(baseURL.append(baseURL.class_days, classDayID + "/attendance" ), {studentID: getDateTime()});
 	//console.log(recieved);
 	//response.send("student " + studentID + " Checked In at " + getDateTime() + " Probably");
@@ -67,12 +67,13 @@ async function classCheckinTest() {
 	const IDs = await helpers.get(baseURL.append(baseURL.professors, text));
 	//console.log(IDs);
 	const classInfo = Object.values(IDs.classIDs);
-	console.log(classInfo);
-	const classCheck = getDateTime().slice(0,10) + "_" + classInfo;
-	helpers.put(baseURL.append(baseURL.class_days, classCheck), {"classDate": getDateTime(), "name": "test", "attendance": [" ",]});
-	const classDates = helpers.get(baseURL.append(baseURL.classes, classInfo + "/classDates"));
-	classDates["Day3"] = "test";
-	console.log(classDates);
+	//console.log(classInfo);
+	const classCheck = getDateTime().slice(0, 10) + "_" + classInfo;
+	helpers.put(baseURL.append(baseURL.class_days, classCheck), { "classDate": getDateTime(), "name": "test", "attendance": [" ",] });
+
+	const classDates = await helpers.get(baseURL.append(baseURL.classes, classInfo + "/classDates"));
+	classDates["Day" + ((Object.keys(classDates).length) + 1)] = getDateTime();
+	//console.log(classDates);
 	//helpers.put(baseURL.append(baseURL.classes, classInfo + "/classDates"), {"Day": getDateTime()});
 	helpers.put(baseURL.append(baseURL.classes, classInfo + "/classDates"), classDates);
 }
@@ -80,14 +81,18 @@ exports.classCheckin = functions.https.onRequest(async (request, response) => {
 	const text = request.query.profID;
 	const IDs = await helpers.get(baseURL.append(baseURL.professors, text));
 	const classInfo = Object.values(IDs.classIDs[0]);
-	const classCheck = getDateTime().slice(0,10) + "_" + classInfo;
-	helpers.put(baseURL.append(baseURL.class_days, classCheck), {"classDate": getDateTime, "name": "none", "attendance": [" ",]});
-	helpers.put(baseURL.append(baseURL.classes, classInfo + "/classDates"), {"Day": getDateTime()})
+	const classCheck = getDateTime().slice(0, 10) + "_" + classInfo;
+	helpers.put(baseURL.append(baseURL.class_days, classCheck), { "classDate": getDateTime, "name": "none", "attendance": [" ",] });
+
+	//putting the classDate into the classdates section in database
+	const classDates = await helpers.get(baseURL.append(baseURL.classes, classInfo + "/classDates"));
+	classDates["Day" + ((Object.keys(classDates).length) + 1)] = getDateTime();
+	helpers.put(baseURL.append(baseURL.classes, classInfo + "/classDates"), classDates);
 	//document.write(classID);
 	response.send(classCheck);
 })
 
-classCheckinTest();
+//classCheckinTest();
 
 
 
@@ -108,39 +113,41 @@ function getDateTime() {
 
 //example: https://us-central1-middleware-6a409.cloudfunctions.net/getProfessorAttendanceData?id=6a407
 exports.getProfessorAttendanceData = functions.https.onRequest(async (request, response) => { // given a prof id, output the info associated
-	let output = { "name": "",
-				   "classes": []
+	let output = {
+		"name": "",
+		"classes": []
 	}
-	let class_obj = {"class_name": "",
-		"class_id": "", 
+	let class_obj = {
+		"class_name": "",
+		"class_id": "",
 		"class_days": [],
 	}
 	let profID = request.query.id;
-	if(profID == null){ // no id param given
-		response.send("how dare you."); 
+	if (profID == null) { // no id param given
+		response.send("how dare you.");
 	}
-	let baseURL = helpers.base(); 
+	let baseURL = helpers.base();
 	let proNode = baseURL.professors + "/" + profID;
-	const profNode = await helpers.get(baseURL.append(proNode,""));
-	if(profNode == null){ // id is not found in the database
-		response.send("check your id."); 
+	const profNode = await helpers.get(baseURL.append(proNode, ""));
+	if (profNode == null) { // id is not found in the database
+		response.send("check your id.");
 	}
-	output.name = await profNode.ProfessorName; 
-	for(const i in await profNode.classIDs){
+	output.name = await profNode.ProfessorName;
+	for (const i in await profNode.classIDs) {
 		let classNode = await helpers.get(baseURL.append(baseURL.classes, profNode.classIDs[i]));
-		class_obj.class_name = await classNode.name; 
+		class_obj.class_name = await classNode.name;
 		class_obj.class_id = profNode.classIDs[i];
 		let classDaysNode = await helpers.get(baseURL.urlclass_days());
 
-		for(const x in classDaysNode){
-			let cur = x.substring(x.length-4, x.length);
-			if(cur == class_obj.class_id){
+		for (const x in classDaysNode) {
+			let cur = x.substring(x.length - 4, x.length);
+			if (cur == class_obj.class_id) {
 				//console.log(cur);
 				class_obj.class_days.push(classDaysNode[x]);
 				output.classes.push(class_obj);
 			}
 		}
 	}
-	response.send(output); 
+	response.send(output);
 })
 
