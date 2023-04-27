@@ -46,9 +46,9 @@ async function checkInStudentTest(){
 
 	const classDayID = date + "_" + classID;
 	let recieved = await helpers.get(baseURL.append(baseURL.class_days, classDayID + "/attendance" ))
-recieved = recieved.push({studentID: getDateTime()});
+//recieved = recieved.push({studentID: getDateTime()});
 	//helpers.post(baseURL.append(baseURL.class_days, classDayID + "/attendance" ), {studentID: getDateTime()});
-	console.log(recieved);
+	//console.log(recieved);
 	//response.send("student " + studentID + " Checked In at " + getDateTime() + " Probably");
 
 }
@@ -65,10 +65,16 @@ async function classCheckinTest() {
 	const text = "6a407";
 	//const baseURL = helpers.base();
 	const IDs = await helpers.get(baseURL.append(baseURL.professors, text));
+	//console.log(IDs);
 	const classInfo = Object.values(IDs.classIDs);
+	console.log(classInfo);
 	const classCheck = getDateTime().slice(0,10) + "_" + classInfo;
 	helpers.put(baseURL.append(baseURL.class_days, classCheck), {"classDate": getDateTime(), "name": "test", "attendance": [" ",]});
-	
+	const classDates = helpers.get(baseURL.append(baseURL.classes, classInfo + "/classDates"));
+	classDates["Day3"] = "test";
+	console.log(classDates);
+	//helpers.put(baseURL.append(baseURL.classes, classInfo + "/classDates"), {"Day": getDateTime()});
+	helpers.put(baseURL.append(baseURL.classes, classInfo + "/classDates"), classDates);
 }
 exports.classCheckin = functions.https.onRequest(async (request, response) => {
 	const text = request.query.profID;
@@ -76,6 +82,7 @@ exports.classCheckin = functions.https.onRequest(async (request, response) => {
 	const classInfo = Object.values(IDs.classIDs[0]);
 	const classCheck = getDateTime().slice(0,10) + "_" + classInfo;
 	helpers.put(baseURL.append(baseURL.class_days, classCheck), {"classDate": getDateTime, "name": "none", "attendance": [" ",]});
+	helpers.put(baseURL.append(baseURL.classes, classInfo + "/classDates"), {"Day": getDateTime()})
 	//document.write(classID);
 	response.send(classCheck);
 })
