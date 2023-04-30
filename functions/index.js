@@ -138,8 +138,3 @@ exports.registerStudent = functions.https.onRequest(async (request, response) =>
 	}
 	response.status(500).send("this should not have happened");
 })
-
-
-
-
-
