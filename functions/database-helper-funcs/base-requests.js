@@ -84,8 +84,6 @@ async function post(url, content){ // this post function takes the url, and also
 	}
 	const posta = await fetch(url, postOptions(content))
 	.catch(error => console.log('error', error));
-	let data = await puta.json();
-	return data; 
 } 
 
 async function put(url, content){
