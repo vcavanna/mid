@@ -5,8 +5,6 @@
 		"node": ">=16"
 	},
 	"dependencies": {
-		"https": "^1.0.0",
-		"node-fetch": "^2.6.9",
-		"node-libcurl": "^3.0.0"
+		"node-fetch": "^2.6.9"
 	}
 }

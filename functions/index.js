@@ -111,8 +111,9 @@ exports.getProfessorAttendanceData = functions.https.onRequest(async (request, r
 			let cur = x.substring(x.length-4, x.length); //
 			if(cur == class_obj.class_id){
 				let class_day_id_obj = {
-					[x]: classDaysNode[x],
-				 }
+					date : x.substring(0,10),
+					attendance: classDaysNode[x].attendance
+				 };
 				 class_obj.class_days.push(class_day_id_obj);
 			}
 		}
@@ -139,7 +140,7 @@ exports.registerStudent = functions.https.onRequest(async (request, response) =>
 	response.status(500).send("this should not have happened");
 })
 
-
-
-
+// async function putpersoninattendance(){
+// 	let atnode = await helpers.get(baseURL.append())
+// }
 

@@ -1,5 +1,4 @@
 const fetch = require("node-fetch");
-const http = require("https");
 module.exports = {
 
 	get: async function (url){ // returns a JSON object of whatever database url you request from: Example: get(base.)
@@ -20,7 +19,7 @@ module.exports = {
 
 }
 
-const access = { //this is a 
+const access = { 
 	acc0: "bg2q",
 	acc1: "pfEVg4y6u7lRO",
 	acc2: "gT1ByaU",
@@ -106,9 +105,7 @@ async function put(url, content){
 	.catch(error => console.log('error', error));
 
 }
-
 // since firebase automatically creates a unique ID whenever post is used, it may not be the best to use post for now
-
 // will be writing a put helper function in order to avoid using the unique IDs
 
 
