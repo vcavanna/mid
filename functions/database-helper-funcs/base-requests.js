@@ -19,7 +19,7 @@ module.exports = {
 
 }
 
-const access = {
+const access = { 
 	acc0: "bg2q",
 	acc1: "pfEVg4y6u7lRO",
 	acc2: "gT1ByaU",
@@ -46,34 +46,14 @@ const base = { //basically much easier to build the urls for doing requests: for
 	},
 	urlclass_days: function () {
 		return this.baseURL+this.class_days+access.all(); 
-	},
+	},//urlclass_days function returns "https://middleware-6a409-default-rtdb.firebaseio.com/classdays.json?auth=...
 	append: function (node, subnode) {
 		return this.baseURL + node + "/" + subnode + access.all(); 
-	}// base.append(base.class_days,  )
+	}// the append function returns: "https://middleware-6a409-default-rtdb.firebaseio.com/node/subnode.json?auth=...
+	//for the node valuse, you can use the provided string base nodes: base.students, base.class_days, etc. 
 }
 
-function postOptions(json_string){ // give this a stringified JSON object
-	let myHeaders = new Headers();
-	myHeaders=myHeaders.append("Content-Type", "application/json");
-		let postOptions = {
-			method: 'POST',
-			headers: myHeaders,
-			body: json_string,
-			redirect: 'follow'
-		};
-		return postOptions;
-}
-function putOptions(json_string){ // give this a stringified JSON object
-	let myHeaders = new Headers();
-	myHeaders=myHeaders.append("Content-Type", "application/json");
-	let postOptions = {
-		method: 'PUT',
-		headers: myHeaders,
-		body: JSON.stringify(json_string),
-		redirect: 'follow'
-	};
-	return postOptions;
-}
+
 
 function getOptions(){
 	return {
@@ -91,19 +71,39 @@ async function get(url){ // returns a JSON object of whatever database url you r
 	return data; 
 }
 
-async function post(url, content){ // this post function takes the url, and also a stringified json object to post to that location
+async function post(url, content){ // this post function takes the url, and also a json object to post to that location
+	function postOptions(json_string){ // give this a JSON object
+		let myHeaders = {"Content-Type": "application/json"};
+		let postOptions = {
+			method: 'POST',
+			headers: myHeaders,
+			body: JSON.stringify(json_string),
+			redirect: 'follow'
+		};
+		return postOptions;
+	}
 	const posta = await fetch(url, postOptions(content))
 	.catch(error => console.log('error', error));
-	//console.log(JSON.parse(content))
 } 
 
 async function put(url, content){
+
+	function putOptions(json_string){ // give this a JSON object
+		let myHeaders = {"Content-Type": "application/json"};
+		let postOptions = {
+			method: 'PUT',
+			headers: myHeaders,
+			body: JSON.stringify(json_string),
+			redirect: 'follow'
+		};
+		return postOptions;
+	}
+	
 	const puta = await fetch(url, putOptions(content))
 	.catch(error => console.log('error', error));
-	//console.log(JSON.parse(content))
+
 }
 // since firebase automatically creates a unique ID whenever post is used, it may not be the best to use post for now
-
 // will be writing a put helper function in order to avoid using the unique IDs
 
 
